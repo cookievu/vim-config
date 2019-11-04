@@ -18,7 +18,6 @@ Plug 'HerringtonDarkholme/yats.vim'
 
 " Language Server Protocol (LSP)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'neoclide/coc-denite'
 Plug 'liuchengxu/vista.vim'
 
 " Comment
@@ -30,9 +29,12 @@ Plug 'ryanoasis/vim-devicons'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'nathanaelkane/vim-indent-guides'
 
 " A simple, easy-to-use Vim alignment plugin
 Plug 'junegunn/vim-easy-align'
+Plug 'easymotion/vim-easymotion'
+Plug 'airblade/vim-gitgutter'
 
 " Autoformat
 Plug 'Chiel92/vim-autoformat'
@@ -41,7 +43,6 @@ Plug 'Chiel92/vim-autoformat'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'Shougo/denite.nvim'
 
 " Airline Status bar
 Plug 'vim-airline/vim-airline'
@@ -113,12 +114,11 @@ map <C-k> <C-W>k
 map <C-l> <C-W>l
 map <C-h> <C-W>h
 
-" Tab
-map <leader>tn :tabnew<cr>
-map <leader>t<leader> :tabnext
-map <leader>tm :tabmove
-map <leader>tc :tabclose<cr>
-map <leader>to :tabonly<cr>
+" Line working
+nnoremap <C-j> :m .+1<CR>==
+nnoremap <C-k> :m .-2<CR>==
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -183,47 +183,6 @@ function! FloatTerm(...)
   autocmd TermClose * ++once :bd! | call nvim_win_close(s:float_term_border_win, v:true)
 endfunction
 
-" lightline
-let g:lightline = {
-      \ 'colorscheme': 'quantum',
-      \ 'active': {
-      \   'left': [ ['fileicon'], [ 'cocstatus' ], [ 'filename' ] ],
-      \   'right': [ [ 'icongitbranch' ], [ 'lineinfo' ] ]
-      \ },
-      \ 'inactive': {
-      \   'left': [ [], ['fileicon'], [ 'filename' ] ],
-      \   'right': []
-      \ },
-      \ 'component': { 'lineinfo': ' %2p%% %3l:%-2v' },
-      \ 'component_function': {
-      \   'fileicon': 'MyFiletype',
-      \   'icongitbranch': 'DrawGitBranchInfo',
-      \   'iconline': 'DrawLineInfo',
-      \   'gitbranch': 'fugitive#head',
-      \   'cocstatus': 'coc#status',
-      \   'filename': 'LightLineFilename',
-      \ },
-      \ }
-
-" Use auocmd to force lightline update.
-autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
-
-" Vista.vim
-function! NearestMethodOrFunction() abort
-  return get(b:, 'vista_nearest_method_or_function', '')
-endfunction
-
-set statusline+=%{NearestMethodOrFunction()}
-
-" Comment config
-autocmd FileType apache setlocal commentstring=#\ %s
-
-" By default vista.vim never run if you don't call it explicitly.
-"
-" If you want to show the nearest function in your statusline automatically,
-" you can add the following line to your vimrc 
-autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
-
 " Key binding
 let mapleader=" "
 
@@ -266,6 +225,7 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " Buffer
 nmap bn :bNext <cr>
 nmap bp :bprevious <cr>
+nmap bw :bw <cr>
 
 " Nerdtree
 nnoremap <Leader>n :NERDTree<CR>
@@ -289,5 +249,8 @@ let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
 let g:NERDCommentEmptyLines = 1
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
-" Enable NERDCommenterToggle to check all selected lines is commented or not 
+" Enable NERDCommenterToggle to check all selected lines is commented or not
 let g:NERDToggleCheckAllLines = 1
+
+" Intent Guides
+let g:indent_guides_enable_on_vim_startup = 1
