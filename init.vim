@@ -5,30 +5,29 @@ call plug#begin('~/.vim/plugged')
 " Some Git stuff
 Plug 'tpope/vim-fugitive'
 
+" Debug
+Plug 'vim-vdebug/vdebug'
+
 " Language support things
 Plug 'sheerun/vim-polyglot'
 Plug 'othree/html5.vim'
 Plug 'JulesWang/css.vim'
 Plug 'cakebaker/scss-syntax.vim'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'elzr/vim-json'
-Plug 'pangloss/vim-javascript'
 Plug 'StanAngeloff/php.vim'
-Plug 'HerringtonDarkholme/yats.vim'
 
 " Language Server Protocol (LSP)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'liuchengxu/vista.vim'
-
-" Comment
-Plug 'scrooloose/nerdcommenter'
-
-" Dracula theme
-Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'ryanoasis/vim-devicons'
-
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+" Comment
+Plug 'heavenshell/vim-jsdoc'
+
+" Dracula theme
+Plug 'ajh17/Spacegray.vim'
+Plug 'ryanoasis/vim-devicons'
+Plug 'altercation/vim-colors-solarized'
 Plug 'nathanaelkane/vim-indent-guides'
 
 " A simple, easy-to-use Vim alignment plugin
@@ -38,20 +37,19 @@ Plug 'airblade/vim-gitgutter'
 
 " Autoformat
 Plug 'Chiel92/vim-autoformat'
+Plug 'rstacruz/sparkup'
 
 " File finder
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
-" Airline Status bar
-Plug 'vim-airline/vim-airline'
-
-" Tagbar
-Plug 'majutsushi/tagbar'
-
 " Multiple select
 Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-surround'
+
+" Auth close html tag
+Plug 'alvan/vim-closetag'
 
 " Auto close bracket
 Plug 'jiangmiao/auto-pairs'
@@ -62,8 +60,7 @@ call plug#end()
 " Global config
 set termguicolors
 syntax on
-color dracula
-
+colorscheme spacegray
 
 set clipboard=unnamedplus
 
@@ -96,6 +93,13 @@ set softtabstop=2
 " when indenting with '>', use 2 spaces width
 set shiftwidth=2
 
+" Spacegray Color Scheme
+" Underlined Search: Underline search text instead of using highlight color.
+let g:spacegray_underline_search = 1
+" Use Italics: Use italics when appropriate, e.g. for comments. 
+let g:spacegray_use_italics = 1
+" Use lower contrast: Use a low contrast variant of Spacegray. 
+let g:spacegray_low_contrast = 1
 
 " CtrlP
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|vendor'
@@ -107,7 +111,7 @@ let g:airline#extensions#tabline#enabled = 1
 " nerdtree config
 let NERDTreeShowHidden=1
 
-" Key map config
+" Keys Mapping
 " Move between windows
 map <C-j> <C-W>j
 map <C-k> <C-W>k
@@ -119,6 +123,8 @@ nnoremap <C-j> :m .+1<CR>==
 nnoremap <C-k> :m .-2<CR>==
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
+
+inoremap <C-d> <esc>ddi
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -179,12 +185,11 @@ function! FloatTerm(...)
     call termopen(a:1)
   endif
   startinsert
-  " Close border window when terminal window close
   autocmd TermClose * ++once :bd! | call nvim_win_close(s:float_term_border_win, v:true)
 endfunction
 
-" Key binding
-let mapleader=" "
+" Leader key
+let mapleader=","
 
 " Open terminal
 nnoremap <Leader>at :call FloatTerm()<CR>
@@ -223,6 +228,7 @@ endfunction
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " Buffer
+nnoremap <Leader>b :ls<CR>:b<Space>
 nmap bn :bNext <cr>
 nmap bp :bprevious <cr>
 nmap bw :bw <cr>
@@ -235,22 +241,21 @@ nnoremap <Leader>f :NERDTreeFind<CR>
 vmap D y'>p
 
 " Comment
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
-" Use compact syntax for prettified multi-line comments
-let g:NERDCompactSexyComs = 1
-" Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
-" Set a language to use its alternate delimiters by default
-let g:NERDAltDelims_java = 1
-" Add your own custom formats or override the defaults
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
-" Allow commenting and inverting empty lines (useful when commenting a region)
-let g:NERDCommentEmptyLines = 1
-" Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
-" Enable NERDCommenterToggle to check all selected lines is commented or not
-let g:NERDToggleCheckAllLines = 1
+let NERDTreeAutoDeleteBuffer = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
 
 " Intent Guides
-let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_enable_on_vim_startup = 0
+
+" Airline
+let g:airline#extensions#tabline#enabled = 1
+
+" Color Highlight
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" JS-DOc
+nmap <silent> <C-/> <Plug>(jsdoc)
+
+" Vim Closetag
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.blade.php'
