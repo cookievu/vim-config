@@ -1,66 +1,29 @@
+set encoding=utf-8
+
 " Vim config by cookievu
-
-call plug#begin('~/.vim/plugged')
-
-" Some Git stuff
-Plug 'tpope/vim-fugitive'
-
-" Debug
-Plug 'vim-vdebug/vdebug'
-
-" Language support things
-Plug 'sheerun/vim-polyglot'
-Plug 'othree/html5.vim'
-Plug 'JulesWang/css.vim'
-Plug 'cakebaker/scss-syntax.vim'
-Plug 'elzr/vim-json'
-Plug 'StanAngeloff/php.vim'
-
-" Language Server Protocol (LSP)
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-" Comment
-Plug 'heavenshell/vim-jsdoc'
-
-" Dracula theme
-Plug 'ajh17/Spacegray.vim'
-Plug 'ryanoasis/vim-devicons'
-Plug 'altercation/vim-colors-solarized'
-Plug 'nathanaelkane/vim-indent-guides'
-
-" A simple, easy-to-use Vim alignment plugin
-Plug 'junegunn/vim-easy-align'
-Plug 'easymotion/vim-easymotion'
-Plug 'airblade/vim-gitgutter'
-
-" Autoformat
-Plug 'Chiel92/vim-autoformat'
-Plug 'rstacruz/sparkup'
-
-" File finder
-Plug 'kien/ctrlp.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-
-" Multiple select
-Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-surround'
-
-" Auth close html tag
-Plug 'alvan/vim-closetag'
-
-" Auto close bracket
-Plug 'jiangmiao/auto-pairs'
-
-call plug#end()
-
+source ~/.config/nvim/plugins.vim
 
 " Global config
-set termguicolors
 syntax on
-colorscheme spacegray
+
+" Enable true color
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
+set cursorline!
+set lazyredraw
+syntime on
+
+set synmaxcol=128
+syntax sync minlines=256
+
+set noshowcmd noruler
+
+" set background=dark
+colorscheme xcode_dark
 
 set clipboard=unnamedplus
 
@@ -88,25 +51,14 @@ filetype plugin indent on
 " On pressing tab, insert 2 spaces
 set expandtab
 " show existing tab with 2 spaces width
-set tabstop=2
-set softtabstop=2
+set tabstop=4
+set softtabstop=4
 " when indenting with '>', use 2 spaces width
-set shiftwidth=2
-
-" Spacegray Color Scheme
-" Underlined Search: Underline search text instead of using highlight color.
-let g:spacegray_underline_search = 1
-" Use Italics: Use italics when appropriate, e.g. for comments. 
-let g:spacegray_use_italics = 1
-" Use lower contrast: Use a low contrast variant of Spacegray. 
-let g:spacegray_low_contrast = 1
-
-" CtrlP
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|vendor'
-let g:ctrlp_working_path_mode = '' " current dir
+set shiftwidth=4
 
 " Airline
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
 
 " nerdtree config
 let NERDTreeShowHidden=1
@@ -124,21 +76,13 @@ nnoremap <C-k> :m .-2<CR>==
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
 
-inoremap <C-d> <esc>ddi
-
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-" Auto close vim when only one nerdtree window left
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" Tagbar
-nmap <F8> :TagbarToggle<CR>
-
 " Autoformat
-noremap <F3> :Autoformat<CR>
+noremap <C-l> :Autoformat<CR>
 
 " Floating Term
 let s:float_term_border_win = 0
@@ -228,10 +172,12 @@ endfunction
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " Buffer
-nnoremap <Leader>b :ls<CR>:b<Space>
-nmap bn :bNext <cr>
+nmap b  :ls<CR>:b<Space>
+nmap bf :bfirst <cr>
+nmap bl :blast <cr>
+nmap bn :bnext <cr>
 nmap bp :bprevious <cr>
-nmap bw :bw <cr>
+nmap bc :bd <cr>
 
 " Nerdtree
 nnoremap <Leader>n :NERDTree<CR>
@@ -257,5 +203,23 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 " JS-DOc
 nmap <silent> <C-/> <Plug>(jsdoc)
 
-" Vim Closetag
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.blade.php'
+" ==== Coc.nvim ====
+" use <tab> for trigger completion and navigate to next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+"Close preview window when completion is done.
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" White space
+nmap <leader>y :StripWhitespace<CR>
+
+" ==== LeaderF ====
+nmap <C-p> :LeaderfFile<CR>
