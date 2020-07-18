@@ -11,6 +11,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " " Autoformat
 Plug 'ianks/vim-tsx'
+Plug 'jiangmiao/auto-pairs'
 
 " " Multiple select
 Plug 'terryma/vim-multiple-cursors'
@@ -25,7 +26,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'airblade/vim-gitgutter'
 
 " " ==== UI Plugins ====
-Plug 'morhetz/gruvbox'
+Plug 'gruvbox-community/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 

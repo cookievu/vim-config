@@ -36,7 +36,7 @@ nmap <C-l> :Prettier<CR>
 nmap ; :Denite buffer<CR>
 nmap <c-P> :DeniteProjectDir file/rec<CR>
 nnoremap <c-G> :<C-u>Denite grep:. -no-empty<CR>
-nnoremap <c-J> :<C-u>DeniteCursorWord grep:.<CR>
+nnoremap <c-Y> :<C-u>DeniteCursorWord grep:.<CR>
 
 " Define mappings while in 'filter' mode
 "   <C-o>         - Switch to normal mode inside of search results
