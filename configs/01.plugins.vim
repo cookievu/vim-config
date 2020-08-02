@@ -30,5 +30,14 @@ Plug 'gruvbox-community/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+Plug 'tpope/vim-fugitive'
+Plug 'sheerun/vim-polyglot'
+Plug 'othree/html5.vim'
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'ryanoasis/vim-devicons'
+Plug 'haya14busa/incsearch.vim'
+Plug 't9md/vim-choosewin'
+Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
+
 call plug#end()
 

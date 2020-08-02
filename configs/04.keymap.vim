@@ -101,3 +101,6 @@ endfunction
 "   <leader>/ - Claer highlighted search terms while preserving history
 map <leader>h :%s///<left><left>
 nmap <silent> <leader>/ :nohlsearch<CR>
+
+" Open terminal
+nnoremap <Leader>at :call FloatTerm()<CR>
