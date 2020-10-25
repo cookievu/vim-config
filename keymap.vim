@@ -43,3 +43,5 @@ nmap <silent> <C-/> <Plug>(jsdoc)
 " Open terminal
 nnoremap <Leader>at :call FloatTerm()<CR>
 nnoremap <Leader>ag :call FloatTerm('"tig"')<CR>
+
+nmap <F8> :TagbarToggle<CR>

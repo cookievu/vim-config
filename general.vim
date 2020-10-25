@@ -30,7 +30,6 @@ set nojoinspaces
 set nowrap
 set number
 set ttyfast
-set laststatus=2
 set ttimeout
 set ttimeoutlen=10
 set termguicolors
@@ -93,33 +92,11 @@ set undoreload=10000
 
 set updatetime=300
 
-" Intent Guides
-let g:indent_guides_enable_on_vim_startup = 0
-
-" Lightline
 set laststatus=2
 set showtabline=2
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'tabline': {
-      \   'left': [ ['buffers'] ],
-      \   'right': [ ['close'] ]
-      \ },
-      \ 'component_expand': {
-      \   'buffers': 'lightline#bufferline#buffers'
-      \ },
-      \ 'component_type': {
-      \   'buffers': 'tabsel'
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'FugitiveHead'
-      \ }
-      \ }
 
-autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
+" Intent Guides
+let g:indent_guides_enable_on_vim_startup = 0
 
 " Color Highlight
 autocmd CursorHold * silent call CocActionAsync('highlight')

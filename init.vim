@@ -10,7 +10,6 @@ if exists('+termguicolors')
 endif
 
 
-
 " Plugins config
 exe 'source ~/.config/nvim/plugin.vim'
 
